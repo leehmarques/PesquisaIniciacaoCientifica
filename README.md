@@ -1,6 +1,3 @@
-Aqui tem o código Markdown completo e pronto a copiar para o seu ficheiro `README.md`. Basta copiar o bloco abaixo e colar diretamente no VS Code:
-
-```markdown
 # Prediction of Adverse Vaccine Reactions using NMF
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Data Science](https://img.shields.io/badge/Data_Science-NMF-blue?style=for-the-badge)
@@ -28,8 +25,6 @@ The code is modularized to ensure readability, scalability, and ease of experime
    ```bash
    git clone [https://github.com/YOUR_USERNAME/nmf-pharmacovigilance-ic.git](https://github.com/YOUR_USERNAME/nmf-pharmacovigilance-ic.git)
    cd nmf-pharmacovigilance-ic
-
-```
 
 2. **Install the required libraries:**
 ```bash
