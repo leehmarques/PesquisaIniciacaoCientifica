@@ -36,7 +36,7 @@ pip install pandas numpy matplotlib requests
 3. **Run the main experiment:**
 Ensure the dataset (`fdalabel_base_completa.csv`) is in the root directory (Note: large CSV files are ignored via `.gitignore`).
 ```bash
-python main.py
+python -m main.main
 
 ```
 
