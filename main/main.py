@@ -11,10 +11,12 @@ functions from `graphics_nmf_model`.
 
 import numpy as np
 import pandas as pd
+import os
 from collections import defaultdict
 
 from model import nmf_model as nmf
 from visualization import graphics_nmf_model as viz
+from processing import processing_fda_data as proc
 
 def main():
     """
@@ -28,23 +30,37 @@ def main():
        evaluates the model's Top-K accuracy using Leave-One-Out validation.
     4. Compiles the metrics and generates visual performance reports.
     """
-    print("Starting data processing and NMF pipeline...")
+    csv_path = "data/fdalabel_with_meddra_hierarchy.csv"
 
-    try:
-        df = pd.read_csv('fdalabel_base_completa.csv')
-        print("CSV file loaded successfully.")
-    except FileNotFoundError:
-        print("Error: File 'fdalabel_base_completa.csv' not found. Please check the path.")
-        return
+    if not os.path.exists(csv_path):
+
+        print("\nDatabase not found.")
+        print("Generating FDA database automatically...")
+
+        df_raw = proc.download_fda_data()
+
+        if df_raw.empty:
+            print("Error: Failed to download FDA data.")
+            return
+
+        df_cleaned = proc.filter_adverse_reactions(df_raw)
+
+        proc.save_data(df_cleaned, csv_path)
+
+        print("Database generated successfully.\n")
+
+    df = pd.read_csv(csv_path)
+
+    print("CSV file loaded successfully.")
 
     # Matrix A: Interaction between Trade Names and Preferred Terms (PT)
-    matrix_A = pd.crosstab(df['TRADE NAME'], df['PT'])
-    A = (matrix_A > 0).astype(float).values
+    matrix_A = pd.crosstab(df['TRADE NAME'], df['PT']) 
+    A = (matrix_A > 0).astype(float).values 
     m, n = A.shape
 
     # Matrix Y: MedDRA hierarchy guidance (HLGT Name x PT)
-    matrix_Y = pd.crosstab(df['HLGT NAME'], df['PT'])
-    Y = (matrix_Y > 0).astype(float).values
+    matrix_Y = pd.crosstab(df['HLGT NAME'], df['PT']) 
+    Y = (matrix_Y > 0).astype(float).values 
     r, _ = Y.shape
 
     print(f"Generated Dimensions -> Matrix A: {A.shape} | Matrix Y: {Y.shape}")
