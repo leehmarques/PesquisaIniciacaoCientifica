@@ -5,7 +5,7 @@
 
 This repository contains the computational pipeline developed for the Scientific Initiation (IC) project at the **Federal University of ABC (UFABC)**. 
 
-The project aims to develop a predictive computational model to identify new and potential adverse reactions associated with different vaccines. The approach is based on **Non-Negative Matrix Factorization (NMF)**, a collaborative filtering technique widely used in recommendation systems, enhanced with Tikhonov (L2) Regularization and joint learning using the MedDRA hierarchy.
+The project aims to develop a predictive computational model to identify new and potential adverse reactions associated with different vaccines. The approach is based on **Non-Negative Matrix Factorization (NMF)**, a collaborative filtering technique widely used in recommendation systems, enhanced with regularization and joint learning using the MedDRA hierarchy.
 
 ## 📊 Data Sources
 * **FDALabel (FDA):** Used to build the primary association matrix between Vaccine (Trade Name) and Adverse Reaction (PT - Preferred Term).
@@ -23,7 +23,7 @@ The code is modularized to ensure readability, scalability, and ease of experime
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/YOUR_USERNAME/nmf-pharmacovigilance-ic.git](https://github.com/YOUR_USERNAME/nmf-pharmacovigilance-ic.git)
+   git clone [https://github.com/leehmarques/PesquisaIniciacaoCientifica.git](https://github.com/leehmarques/PesquisaIniciacaoCientifica.git)
    cd nmf-pharmacovigilance-ic
 
 2. **Install the required libraries:**

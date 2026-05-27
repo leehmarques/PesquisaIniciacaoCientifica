@@ -1,10 +1,3 @@
-# Ignorar arquivos de dados
-*.csv
-csvs_baixados/
-
 # Ignorar pastas de cache do Python
 __pycache__/
 *.pyc
-
-# Ignorar imagens geradas (opcional, remova se quiser subir os gráficos)
-*.png
