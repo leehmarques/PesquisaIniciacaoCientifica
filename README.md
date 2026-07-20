@@ -100,7 +100,7 @@ python main.py
 
 O script imprimirá as taxas de acerto Top-K na consola e guardará as imagens `accuracy_comparison.png` e `error_convergence.png` na diretoria local.
 
-## 👨‍🔬 Autoria e Agradecimentos
+## 👨‍🔬 Autoria 
 
 * **Pesquisadora:** Letícia Marques Ferreira
 * **Orientadora:** Profª. Drª. Suzana de Siqueira Santos

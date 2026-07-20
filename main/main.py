@@ -70,9 +70,10 @@ def main():
     evaluate_top_k = [1, 3, 5, 10, 20, 50, 100]
     num_tests = 100
     experiment_repetitions = 100
+    # lambda_test_values = [0.0, 0.001, 0.01, 0.1, 1.0]
+    
     alpha_val = 1.0
-
-    lambda_test_values = [0.0, 0.001, 0.01, 0.1, 1.0]
+    lambda_test_values = [0.0]
 
     results_by_lambda = {}
     error_curves_by_lambda = {}
@@ -125,6 +126,29 @@ def main():
     )
     
     print("Process finished! High-resolution plots have been saved to the current directory.")
+
+    # EXPORTING DATA FOR STREAMLIT
+    os.makedirs("results", exist_ok=True)
+    
+    reference_lambda = 0.0 
+    
+    if reference_lambda in results_by_lambda:
+        topk_results = results_by_lambda[reference_lambda]
+        df_topk = pd.DataFrame({
+            'Top_K': evaluate_top_k,
+            'Accuracy_Percentage': [topk_results[tk] * 100 for tk in evaluate_top_k]
+        })
+        df_topk.to_csv("results/topk_accuracy.csv", index=False)
+        
+        convergence_errors = error_curves_by_lambda[reference_lambda]
+        df_error = pd.DataFrame({
+            'Iteration': range(1, len(convergence_errors) + 1),
+            'MSE_Error': convergence_errors
+        })
+        df_error.to_csv("results/convergence_error.csv", index=False)
+        
+        print(" -> 'results/topk_accuracy.csv' saved successfully!")
+        print(" -> 'results/convergence_error.csv' saved successfully!")
 
 if __name__ == "__main__":
     main()
