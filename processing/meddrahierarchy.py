@@ -74,23 +74,18 @@ def save_data(df, output_folder, filename):
 
 # Main execution block
 if __name__ == "__main__":
-    print("Starting MedDRA data enrichment process...")
     
     data_directory = "data"
     input_fda_file = os.path.join(data_directory, 'fdalabel.csv') 
     output_file = 'fdalabel_with_meddra_hierarchy.csv' 
     
     try:
-        print("Loading filtered FDA data...")
         df_base = pd.read_csv(input_fda_file)
         
-        print("Enriching dataset with HLT and HLGT hierarchies and names...")
         df_enriched = enrich_with_meddra(df_base, data_dir=data_directory)
         
-        print("Saving the enriched dataset...")
         save_data(df_enriched, output_folder=data_directory, filename=output_file)
-        
-        print("Enrichment completed successfully! The dataset is ready for the NMF model.")
+    
         
     except FileNotFoundError as e:
         print(f"Error: Could not find file. Details: {e}")

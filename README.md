@@ -77,7 +77,7 @@ O código foi modularizado para garantir legibilidade, escalabilidade e facilida
 
 1. **Clonar o repositório:**
 ```bash
-git clone [https://github.com/SEU_USUARIO/nmf-pharmacovigilance-ic.git](https://github.com/SEU_USUARIO/nmf-pharmacovigilance-ic.git)
+git clone [https://github.com/leehmarques/PesquisaIniciacaoCientifica.git](https://github.com/leehmarques/PesquisaIniciacaoCientifica.git)
 cd nmf-pharmacovigilance-ic
 
 ```
@@ -91,20 +91,20 @@ pip install pandas numpy matplotlib requests
 
 
 3. **Executar o experimento principal:**
-Certifique-se de que o conjunto de dados (`fdalabel_base_completa.csv`) está na diretoria raiz (Nota: ficheiros CSV pesados são ignorados pelo `.gitignore`).
+Certifique-se de que o conjunto de dados (`fdalabel_base_completa.csv`) está na raiz (Nota: CSV pesados são ignorados pelo `.gitignore`).
 ```bash
 python main.py
 
 ```
 
 
-O script imprimirá as taxas de acerto Top-K na consola e guardará as imagens `accuracy_comparison.png` e `error_convergence.png` na diretoria local.
+O script imprimirá as taxas de acerto Top-K no console e guardará as imagens `accuracy_comparison.png` e `error_convergence.png` no local.
 
 ## 👨‍🔬 Autoria 
 
 * **Pesquisadora:** Letícia Marques Ferreira
 * **Orientadora:** Profª. Drª. Suzana de Siqueira Santos
-* **Instituição:** Universidade Federal do ABC (UFABC) - Edital 01/2025
+* **Instituição:** Universidade Federal do ABC (UFABC) 
 
 ```
 
