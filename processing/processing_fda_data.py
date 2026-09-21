@@ -236,19 +236,15 @@ def save_data(df, output_folder, filename):
     file_path = os.path.join(output_folder, filename)
     
     df.to_csv(file_path, index=False, encoding='utf-8-sig')
-    print(f"File {file_path} saved successfully!")
 
 
 if __name__ == "__main__":
     
-    # 1. Download and concatenate all CSVs
     df_raw = download_fda_data()
     
     if not df_raw.empty:
-        # 2. Clean and filter adverse reaction data
         df_cleaned = filter_adverse_reactions(df_raw)
         
-        # 3. Save with the exact name expected by main.py inside the 'data' folder
         save_data(df_cleaned, output_folder="data", filename="fdalabel.csv")
         
         print("Database generated successfully and ready for use!")
