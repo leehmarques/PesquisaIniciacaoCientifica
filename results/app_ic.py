@@ -17,7 +17,13 @@ st.header("🔍 Explorador de Previsões")
 def carregar_dados():
     arquivo = "results/all_associations_predictions.csv"
     if os.path.exists(arquivo):
-        return pd.read_csv(arquivo)
+        df_loaded = pd.read_csv(arquivo)
+        # Criando a coluna de Status de Predição descritiva
+        if 'KNOWN_BY_FDA' in df_loaded.columns:
+            df_loaded['STATUS_PREDICAO'] = df_loaded['KNOWN_BY_FDA'].apply(
+                lambda x: 'Associação Resgatada' if x else 'Novo Sinal Predito'
+            )
+        return df_loaded
     else:
         st.error(f"'{arquivo}' não encontrado. Verifique o caminho do arquivo.")
         return pd.DataFrame()
@@ -73,18 +79,17 @@ if not df.empty:
         
         with col_donut:
             st.markdown("#### Proporção de Associações")
-            if 'KNOWN_BY_FDA' in df_filtrado.columns:
-                contagem_fda = df_filtrado['KNOWN_BY_FDA'].value_counts().reset_index()
-                contagem_fda.columns = ['Status FDA', 'Contagem']
-                contagem_fda['Status FDA'] = contagem_fda['Status FDA'].map({True: 'Conhecida (FDA)', False: 'Nova Previsão (NMF)'})
+            if 'STATUS_PREDICAO' in df_filtrado.columns:
+                contagem_fda = df_filtrado['STATUS_PREDICAO'].value_counts().reset_index()
+                contagem_fda.columns = ['Status Predição', 'Contagem']
 
                 fig_pie = px.pie(
                     contagem_fda, 
-                    names='Status FDA', 
+                    names='Status Predição', 
                     values='Contagem',
                     hole=0.4,
-                    color='Status FDA',
-                    color_discrete_map={'Conhecida (FDA)': '#2E86C1', 'Nova Previsão (NMF)': '#E74C3C'}
+                    color='Status Predição',
+                    color_discrete_map={'Associação Resgatada': '#2E86C1', 'Novo Sinal Predito': '#E74C3C'}
                 )
                 fig_pie.update_layout(
                     height=380, 
@@ -125,18 +130,18 @@ if not df.empty:
             x='NORMALIZED_SCORE_0_100', 
             orientation='h',
             color='NORMALIZED_SCORE_0_100',
-            color_continuous_scale='Inferno', 
+            color_continuous_scale='Viridis', # Substituído de Inferno para Viridis
             labels={
                 'NORMALIZED_SCORE_0_100': 'Score Normalizado', 
                 'PAR': '',
                 'HLGT_NAME': 'Categoria HLGT',
                 'RAW_SCORE': 'Score Bruto',
-                'KNOWN_BY_FDA': 'Conhecida pela FDA?'
+                'STATUS_PREDICAO': 'Status'
             },
             hover_data={
                 'HLGT_NAME': True, 
-                'RAW_SCORE': ':.4f', # Limita o tooltip a 4 casas decimais
-                'KNOWN_BY_FDA': True, 
+                'RAW_SCORE': ':.4f',
+                'STATUS_PREDICAO': True, 
                 'PAR': False
             } 
         )
@@ -197,7 +202,7 @@ if not df.empty:
                 path=[px.Constant("Previsões NMF"), 'HLGT_NAME', 'ADVERSE_REACTION_PT', 'TRADE_NAME'],
                 values='NORMALIZED_SCORE_0_100',
                 color='NORMALIZED_SCORE_0_100',
-                color_continuous_scale='Inferno',
+                color_continuous_scale='Viridis', # Substituído de Inferno para Viridis
                 labels={'NORMALIZED_SCORE_0_100': 'Score'}
             )
             
@@ -216,12 +221,12 @@ if not df.empty:
     with tab2:
         st.markdown("### Registro de Associações Preditivas (NMF vs. FDALabel)")
         st.dataframe(
-            df_filtrado[['TRADE_NAME', 'ADVERSE_REACTION_PT', 'HLGT_NAME', 'KNOWN_BY_FDA', 'RAW_SCORE', 'NORMALIZED_SCORE_0_100']],
+            df_filtrado[['TRADE_NAME', 'ADVERSE_REACTION_PT', 'HLGT_NAME', 'STATUS_PREDICAO', 'RAW_SCORE', 'NORMALIZED_SCORE_0_100']],
             column_config={
                 "TRADE_NAME": "Nome da Vacina",
                 "ADVERSE_REACTION_PT": "Reação Adversa (PT)",
                 "HLGT_NAME": "Categoria HLGT",
-                "KNOWN_BY_FDA": "Conhecida pela FDA?",
+                "STATUS_PREDICAO": "Status da Predição",
                 "RAW_SCORE": st.column_config.NumberColumn(
                     "Score Bruto",
                     help="Valor original da reconstrução da matriz NMF",
