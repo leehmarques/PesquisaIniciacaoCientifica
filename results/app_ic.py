@@ -129,7 +129,7 @@ if not df.empty:
             x='NORMALIZED_SCORE_0_100', 
             orientation='h',
             color='NORMALIZED_SCORE_0_100',
-            color_continuous_scale='Viridis', # Substituído de Inferno para Viridis
+            color_continuous_scale='Viridis', 
             labels={
                 'NORMALIZED_SCORE_0_100': 'Score Normalizado', 
                 'PAR': '',
