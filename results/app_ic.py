@@ -35,13 +35,13 @@ if not df.empty:
     
     tipo_associacao = st.sidebar.radio(
         "Filtrar Associações:",
-        ("Todas", "Apenas Novas Previsões (Desconhecidas)", "Apenas Conhecidas pela FDA")
+        ("Todas", "Apenas Novos Sinais Preditos", "Apenas Associações Resgatadas")
     )
     
-    if tipo_associacao == "Apenas Novas Previsões (Desconhecidas)":
-        df_filtrado = df[df['KNOWN_BY_FDA'] == False]
-    elif tipo_associacao == "Apenas Conhecidas pela FDA":
-        df_filtrado = df[df['KNOWN_BY_FDA'] == True]
+    if tipo_associacao == "Apenas Novos Sinais Preditos":
+        df_filtrado = df[df['STATUS_PREDICAO'] == 'Novo Sinal Predito']
+    elif tipo_associacao == "Apenas Associações Resgatadas":
+        df_filtrado = df[df['STATUS_PREDICAO'] == 'Associação Resgatada']
     else:
         df_filtrado = df
 
@@ -129,7 +129,7 @@ if not df.empty:
             x='NORMALIZED_SCORE_0_100', 
             orientation='h',
             color='NORMALIZED_SCORE_0_100',
-            color_continuous_scale='Viridis', 
+            color_continuous_scale='Viridis',
             labels={
                 'NORMALIZED_SCORE_0_100': 'Score Normalizado', 
                 'PAR': '',
@@ -201,7 +201,7 @@ if not df.empty:
                 path=[px.Constant("Previsões NMF"), 'HLGT_NAME', 'ADVERSE_REACTION_PT', 'TRADE_NAME'],
                 values='NORMALIZED_SCORE_0_100',
                 color='NORMALIZED_SCORE_0_100',
-                color_continuous_scale='Viridis', 
+                color_continuous_scale='Viridis',
                 labels={'NORMALIZED_SCORE_0_100': 'Score'}
             )
             
