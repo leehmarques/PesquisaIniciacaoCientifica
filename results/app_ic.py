@@ -18,7 +18,6 @@ def carregar_dados():
     arquivo = "results/all_associations_predictions.csv"
     if os.path.exists(arquivo):
         df_loaded = pd.read_csv(arquivo)
-        # Criando a coluna de Status de Predição descritiva
         if 'KNOWN_BY_FDA' in df_loaded.columns:
             df_loaded['STATUS_PREDICAO'] = df_loaded['KNOWN_BY_FDA'].apply(
                 lambda x: 'Associação Resgatada' if x else 'Novo Sinal Predito'
@@ -202,7 +201,7 @@ if not df.empty:
                 path=[px.Constant("Previsões NMF"), 'HLGT_NAME', 'ADVERSE_REACTION_PT', 'TRADE_NAME'],
                 values='NORMALIZED_SCORE_0_100',
                 color='NORMALIZED_SCORE_0_100',
-                color_continuous_scale='Viridis', # Substituído de Inferno para Viridis
+                color_continuous_scale='Viridis', 
                 labels={'NORMALIZED_SCORE_0_100': 'Score'}
             )
             
