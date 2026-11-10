@@ -9,6 +9,8 @@ st.markdown("""
 Ferramenta analítica desenvolvida para a exploração de padrões latentes em dados de farmacovigilância. 
 O dashboard exibe a força de associação entre vacinas e reações adversas, padronizadas pelo dicionário **MedDRA** e
 utilizando a Fatoração de Matrizes Não-Negativas (NMF), destacando potenciais eventos adversos que ainda não possuem documentação oficial na base da FDA.
+
+ **Repositório do Projeto:** [GitHub - PesquisaIniciacaoCientifica](https://github.com/leehmarques/PesquisaIniciacaoCientifica)
 """)
 
 st.header("🔍 Explorador de Previsões")
@@ -178,65 +180,3 @@ if not df.empty:
                     "NORMALIZED_SCORE_0_100": "Score Médio"
                 }
             )
-            
-            fig_heat.update_traces(
-                hovertemplate="<b>Categoria (HLGT):</b> %{x}<br><b>Vacina:</b> %{y}<br><b>Score Médio:</b> %{z:.4f}<extra></extra>"
-            )
-            
-            fig_heat.update_layout(height=550, margin=dict(l=0, r=0, t=30, b=0))
-            st.plotly_chart(fig_heat, use_container_width=True)
-        else:
-            st.info("Os filtros atuais não possuem dados sobrepostos suficientes para gerar o heatmap.")
-
-        st.divider()
-
-        st.markdown("### Hierarquia de Reações Específicas (Treemap - PT)")
-        st.caption("Navegue pelas categorias (HLGT) para ver as reações específicas (PT) e as vacinas associadas. O tamanho representa a força do Score Normalizado.")
-        
-        top_pt_df = df_filtrado.nlargest(100, 'NORMALIZED_SCORE_0_100').fillna("Desconhecido")
-        
-        if not top_pt_df.empty:
-            fig_tree = px.treemap(
-                top_pt_df,
-                path=[px.Constant("Previsões NMF"), 'HLGT_NAME', 'ADVERSE_REACTION_PT', 'TRADE_NAME'],
-                values='NORMALIZED_SCORE_0_100',
-                color='NORMALIZED_SCORE_0_100',
-                color_continuous_scale='Viridis',
-                labels={'NORMALIZED_SCORE_0_100': 'Score'}
-            )
-            
-            fig_tree.update_traces(
-                hovertemplate="<b>%{label}</b><br>Score Normalizado: %{value:.2f}<extra></extra>"
-            )
-            
-            fig_tree.update_layout(
-                height=650, 
-                margin=dict(l=0, r=0, t=30, b=0)
-            )
-            st.plotly_chart(fig_tree, use_container_width=True)
-        else:
-            st.info("Dados insuficientes para gerar o mapa de árvore.")
-
-    with tab2:
-        st.markdown("### Registro de Associações Preditivas (NMF vs. FDALabel)")
-        st.dataframe(
-            df_filtrado[['TRADE_NAME', 'ADVERSE_REACTION_PT', 'HLGT_NAME', 'STATUS_PREDICAO', 'RAW_SCORE', 'NORMALIZED_SCORE_0_100']],
-            column_config={
-                "TRADE_NAME": "Nome da Vacina",
-                "ADVERSE_REACTION_PT": "Reação Adversa (PT)",
-                "HLGT_NAME": "Categoria HLGT",
-                "STATUS_PREDICAO": "Status da Predição",
-                "RAW_SCORE": st.column_config.NumberColumn(
-                    "Score Bruto",
-                    help="Valor original da reconstrução da matriz NMF",
-                    format="%.4f" 
-                ),
-                "NORMALIZED_SCORE_0_100": st.column_config.NumberColumn(
-                    "Score Normalizado",
-                    help="Score de predição escalonado (0 a 100)",
-                    format="%.2f" 
-                )
-            },
-            use_container_width=True,
-            hide_index=True
-        )
